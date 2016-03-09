@@ -153,7 +153,7 @@ Pro.pro.page.curentrect.position=pos;
 //canv.onmousemove(function( event ) {
   //       console.log("CanMove");
 //	});
-
+console.log("main");
 // push mew image
 Pro.pro.page.func.addnewObj("t1");
 //Pro.pro.page.func.addnewObj("t1");
