@@ -1,17 +1,10 @@
+/**
+ * @author Sam
+ */
+  var iconSelect;
 
-
-var iconSelect;
-function hi() {
-	console.log("HIHI");
-}
-
-//paper.install(window);
         window.onload = function(){
-        	// Get a reference to the canvas object
-    		//var can = document.getElementById('myCanvas');
-    		// Create an empty project and a view for the canvas:
-    		//paper.setup('can');
-    		
+
             iconSelect = new IconSelect("my-icon-select", 
                 {'selectedIconWidth':48,
                 'selectedIconHeight':48,
@@ -20,8 +13,7 @@ function hi() {
                 'iconsHeight':23,
                 'boxIconSpace':1,
                 'vectoralIconNumber':4,
-                'horizontalIconNumber':4,
-                'onclick': 'hi'});
+                'horizontalIconNumber':4});
 
             var icons = [];
             icons.push({'iconFilePath':'img/turang/1.png', 'iconValue':'1'});
@@ -41,18 +33,5 @@ function hi() {
             
             iconSelect.refresh(icons);
 
-            var elem = $('.icon img');
-            var iter=0;
-            elem.each(function() {
-            	 $(this).attr("id", "ic"+iter++);
-            	 $(this).click(function (e) {
-            		 console.log("Qwi qwi");
-            		// Pro.pro.page.func.addnewObj("t1");
-            	 });
-            	 
-			});
-            
-            
-            
         };
             
