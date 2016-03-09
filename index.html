@@ -23,10 +23,8 @@
         <script type="text/javascript" src="lib/iscroll.js"></script>
         
 	<script type="text/javascript" src="js/dist/paper.js"></script>
-		<script type="text/paperscript" canvas="can" src="js/main.js">
-			
-		</script>
-
+	
+	
 	
 	</head>
 
@@ -42,12 +40,15 @@
 				<p>
 					<a href="/contact">Contact</a>
 				</p>
+				<button onclick="Pro.pro.page.func.addnewObj('td1');">Кнопка с текстом</button>
 			</nav>
   <div id="my-icon-select">
   	
   </div>
 			<div class="centreclass">
-                     <canvas  id="can" width="700" height="500">It's not working!</canvas>
+                    <canvas id="myCanvas" width="800" height="600" resize>
+                    	
+                    </canvas>
 			</div>
 
 
@@ -64,6 +65,7 @@
 				</p>
 			</footer>
 		</div>
-	<script src="js/loads.js"></script>
+
 	</body>
+	<script src="js/load3.js"></script>
 </html>
