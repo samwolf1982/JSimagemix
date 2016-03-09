@@ -2,7 +2,9 @@
  * @author Sam
  */
   var iconSelect;
-
+function hi() {
+	console.log("HIHI");
+}
         window.onload = function(){
 
             iconSelect = new IconSelect("my-icon-select", 
@@ -13,7 +15,8 @@
                 'iconsHeight':23,
                 'boxIconSpace':1,
                 'vectoralIconNumber':4,
-                'horizontalIconNumber':4});
+                'horizontalIconNumber':4,
+                'onclick': 'hi'});
 
             var icons = [];
             icons.push({'iconFilePath':'img/turang/1.png', 'iconValue':'1'});
@@ -33,5 +36,18 @@
             
             iconSelect.refresh(icons);
 
+            var elem = $('.icon img');
+            var iter=0;
+            elem.each(function() {
+            	 $(this).attr("id", "ic"+iter++);
+            	 $(this).click(function (e) {
+            		 console.log("Qwi qwi");
+            	 Pro.pro.page.func.addnewObj("ic6");
+            	 });
+            	 
+			});
+            
+            
+            
         };
             

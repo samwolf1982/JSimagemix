@@ -155,7 +155,7 @@ Pro.pro.page.curentrect.position=pos;
 //	});
 
 // push mew image
-Pro.pro.page.func.addnewObj("td1");
+Pro.pro.page.func.addnewObj("t1");
 //Pro.pro.page.func.addnewObj("t1");
 Pro.pro.page.func.addnewObj("gif1");
 
