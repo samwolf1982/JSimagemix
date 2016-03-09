@@ -1,12 +1,17 @@
-/**
- * @author Sam
- */
-  var iconSelect;
+
+
+var iconSelect;
 function hi() {
 	console.log("HIHI");
 }
-        window.onload = function(){
 
+//paper.install(window);
+        window.onload = function(){
+        	// Get a reference to the canvas object
+    		//var can = document.getElementById('myCanvas');
+    		// Create an empty project and a view for the canvas:
+    		//paper.setup('can');
+    		
             iconSelect = new IconSelect("my-icon-select", 
                 {'selectedIconWidth':48,
                 'selectedIconHeight':48,
@@ -42,7 +47,7 @@ function hi() {
             	 $(this).attr("id", "ic"+iter++);
             	 $(this).click(function (e) {
             		 console.log("Qwi qwi");
-            	 Pro.pro.page.func.addnewObj("ic6");
+            		// Pro.pro.page.func.addnewObj("t1");
             	 });
             	 
 			});
