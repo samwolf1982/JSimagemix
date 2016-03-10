@@ -1,7 +1,6 @@
 /**
  * @author Sam
  */
-// лечить мишку так обработать момент когда мишка покидает если она нажата обработать
 // Only executed our code once the DOM is ready.
 window.onload = function() {
 	// Get a reference to the canvas object
@@ -35,6 +34,25 @@ window.onload = function() {
 		lastPoint : null
 
 	};
+	Pro.pro.page.test={
+	    addrect: function() {
+	    	var point = new paper.Point(20, 20);
+	    	var size = new paper.Size(60, 60);
+	    	var shape = new paper.Shape.Rectangle(point, size);
+	    	shape.tt=true;
+	    	Pro.pro.page.curentrect=shape;
+	    	shape.strokeColor = 'black';
+		},
+		
+		removerect: function() {
+			console.log("rem");
+
+	
+		Pro.pro.page.curentrect.remove();
+			paper.view.update();
+		}
+		
+	};
 	Pro.pro.page.func = {
 		// takecanvas.. later
 		/*
@@ -63,22 +81,23 @@ window.onload = function() {
 		 */
 		drawrect : function(point, size) {
 			var shape = new paper.Shape.Rectangle(point, size);
-			//console.log(shape);
-			shape.stateDraw = true;
-			//console.log(shape);
-			shape.onMouseUp = Pro.pro.page.events.eventRectMouseUp;
-			shape.onMouseMove = Pro.pro.page.events.eventRectMouseMove;
-			shape.onMouseDown = Pro.pro.page.events.eventRectMouseDown;
+			console.log(shape);
+			shape.stateDraw=true;
+			console.log(shape);
+			shape.onMouseUp =Pro.pro.page.events.eventRectMouseUp;
+			shape.onMouseMove=Pro.pro.page.events.eventRectMouseMove;
+			shape.onMouseDown=Pro.pro.page.events.eventRectMouseDown;
 			shape.strokeColor = 'black';
 			shape.opacity = 0.2;
-			shape.fillColor = 'grey';
+			shape.fillColor= 'grey';
 			// Set the shadow color of the circle to RGB black:
-			shape.shadowColor = new paper.Color(0, 0, 80);
-			// Set the shadow blur radius to 12:
-			shape.shadowBlur = 20;
-			// Offset the shadow by { x: 5, y: 5 }
-			shape.shadowOffset = new paper.Point(5, 5);
-
+		    shape.shadowColor= new paper.Color(0, 0, 80);
+		    // Set the shadow blur radius to 12:
+		    shape.shadowBlur= 20;
+		    // Offset the shadow by { x: 5, y: 5 }
+		    shape=shadowOffset= new paper.Point(5, 5);
+		  
+		    
 			return shape;
 
 		},
@@ -96,38 +115,24 @@ window.onload = function() {
 				return null;
 		},
 		addnewObj : function(idObj) {
+			var obj = {
+				stateDraw : false
+			};
+			obj.img = Pro.pro.page.func.drawimageOnCanvas(idObj);
 
-			var obj = Pro.pro.page.func.drawimageOnCanvas(idObj);
-			obj.tateDraw = false;
-
-			obj.position = new paper.Point(obj.position.x - 150, obj.position.y);
-			obj.onMouseEnter = Pro.pro.page.events.eventMouseEnter;
-			obj.onClick = Pro.pro.page.events.eventMouseClick;
-			obj.onMouseDown = Pro.pro.page.events.eventMouseDown;
+			obj.img.position = new paper.Point(obj.img.position.x - 150,
+					obj.img.position.y);
+			obj.img.onMouseEnter = Pro.pro.page.events.eventMouseEnter;
+			obj.img.onClick = Pro.pro.page.events.eventMouseClick;
+			obj.img.onMouseDown = Pro.pro.page.events.eventMouseDown;
 			// add to arrayList
-			// Pro.pro.page.objectsArray.push(obj.img);
-			// obj.img.onMouseMove = Pro.pro.page.events.eventMouseMove;
-			obj.onMouseUp = Pro.pro.page.events.eventMouseUp;
-			Pro.pro.page.objectsArray.push(obj);
+			Pro.pro.page.objectsArray.push(obj.img);
+//obj.img.onMouseMove = Pro.pro.page.events.eventMouseMove;
+			obj.img.onMouseUp = Pro.pro.page.events.eventMouseUp;
+			Pro.pro.page.objectsArray.push(obj.img);
 		},
-		/*
-		 * what image is selected return index
-		 */
-		whoisimagestate : function() {
-
-			// search img where stateDraw+ move image to new destination
-			var res = null;
-			Pro.pro.page.objectsArray.forEach(function(item, i, arr) {
-				if (item.stateDraw == true) {
-					console.log("OK search" + i);
-					// arr[i].position=Pro.pro.page.curentrect.position;
-					// arr[i].stateDraw=false;
-					res = i;
-					// break;
-					// return nor work ((
-				}
-			});
-			return res;
+		drawcirkce: function() {
+			
 		}
 	};
 
@@ -153,30 +158,24 @@ window.onload = function() {
 		 */
 		eventMouseDown : function(event, obj) {
 			console.log("move & down " + event.point);
-			
-			var index = Pro.pro.page.func.whoisimagestate();
-			console.log("157 index "+ index);
-			if(index!=null) {Pro.pro.page.objectsArray[index].stateDraw=false;};
-			
 
 			this.stateDraw = true;
 			this.bringToFront();
 			Pro.pro.page.lastPoint = event.point;
 
-			if (Pro.pro.page.curentrect) {
-				// console.log(Pro.pro.page.curentrect);
-				Pro.pro.page.curentrect.remove();// removeOn({
-				paper.view.update();
-			}
-
-			// drag: true,
-			// down: true
-			// });
+			if (Pro.pro.page.curentrect)
+				Pro.pro.page.curentrect.removeOn();//removeOn({
+			     //   drag: true,
+			   //     down: true
+			 //   });
 			Pro.pro.page.curentrect = Pro.pro.page.func.drawrect(
 					this.bounds.point, this.bounds.size);
-			// Pro.pro.page.curentrect.bringToFront();
+			//Pro.pro.page.curentrect.bringToFront();
 			Pro.pro.page.curentrect.onMouseEnter = function(event) {
 				console.log("curentrect enter reckt");
+			};
+			Pro.pro.page.curentrect.onMouseMove = function(event) {
+				console.log("curentrect mOVE mouse");
 			};
 
 		},
@@ -199,8 +198,7 @@ window.onload = function() {
 			}
 		},
 		eventRectMouseMove : function(e) {
-			console.log("121 move RECT " + " P: " + Pro.pro.page.lastPoint
-					+ " SD " + this.stateDraw);
+			console.log("121 move RECT "+" P: "+Pro.pro.page.lastPoint+ " SD "+this.stateDraw );
 			if (Pro.pro.page.lastPoint && this.stateDraw == true) {
 
 				var pos = Pro.pro.page.func.newPosition(this.position, e.point);
@@ -209,43 +207,30 @@ window.onload = function() {
 
 			}
 		},
-		eventRectMouseUp : function(event, obj) {
+			eventRectMouseUp : function(event, obj) {
 
-			this.stateDraw = false;
-			// search img where stateDraw+ move image to new destination
-			console.log(Pro.pro.page.func.whoisimagestate());
-			var index = Pro.pro.page.func.whoisimagestate();
-			if(index==null) {return;};
-			//console.log("index " + index);
-			Pro.pro.page.objectsArray[index].position = Pro.pro.page.curentrect.position;
-			//console.log("index " + index);
-			//Pro.pro.page.objectsArray[index].stateDraw=false;
-			// Pro.pro.page.objectsArray.forEach(function(item, i, arr) {
-			// if(item.stateDraw==true){
-			// console.log("OK");
-			// arr[i].position=Pro.pro.page.curentrect.position;
-			// arr[i].stateDraw=false;
-			// return;
-			// }
-			// }
-			// );
+				Pro.pro.page.lastPoint = null;
+				// Pro.pro.page.buzystate=false;
+				this.stateDraw = false;
 
-		},
+			},
 		eventRectMouseDown : function(event, obj) {
 
 			Pro.pro.page.lastPoint = event.point;
-			console.log("Mouse Down: " + event.point);
+			console.log("Mouse Down: "+event.point);
 			// Pro.pro.page.buzystate=false;
 			this.stateDraw = true;
 
 		}
+		
+		
 
 	};
-
+	Pro.pro.page.test.addrect();
 	// push mew image
-	Pro.pro.page.func.addnewObj("td1");
-	Pro.pro.page.func.addnewObj("td1");
+	//Pro.pro.page.func.addnewObj("td1");
+	//Pro.pro.page.func.addnewObj("td1");
 	// Pro.pro.page.func.addnewObj("t1");
-	Pro.pro.page.func.addnewObj("gif1");
+	//Pro.pro.page.func.addnewObj("gif1");
 
 };
