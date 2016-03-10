@@ -7,6 +7,7 @@
 window.onload = function() {
 	// Get a reference to the canvas object
 	var canvas = document.getElementById('myCanvas');
+	  canvas.syncDimension= true;
 	// Create an empty project and a view for the canvas:
 	paper.setup(canvas);
 	// Create a Paper.js Path to draw a line into it:
@@ -34,7 +35,8 @@ window.onload = function() {
 		stateofmouseDow : false, // state of mouse
 		objectsArray : new Array(),
 		lastPoint : null,
-		lastPointCircle: null
+		lastPointCircle: null,
+		curentImageIndex: null
 
 	};
 	Pro.pro.page.func = {
@@ -44,18 +46,20 @@ window.onload = function() {
 		drawimageOnCanvas : function(imageId, pointState, imageSize) {
 
 			var rastertGif = new paper.Raster(imageId);
-			rastertGif.ondragstart = function() {
-				return false;
-			};
-			if (pointState) {
-				rastertGif.position = pointState;
-			}
-			;
-			if (imageSize) {
-				rastertGif.size = imageSize;
-			}
-			;
+			//rastertGif.size=new paper.Size(50,50);
+			//rastertGif.ondragstart = function() {
+			//	return false;
+			//};
+			//if (pointState) {
+			//	rastertGif.position = pointState;
+		//	}
+			//;
+			//if (imageSize) {
+			//	rastertGif.size = imageSize;
+			//}
+			//;
 			rastertGif.position = paper.view.center;
+		
 			return rastertGif;
 		},
 		/*
@@ -248,16 +252,15 @@ window.onload = function() {
 			}
 		},
 		eventRectMouseMove : function(e) {
-		//	console.log("121 move RECT " + " P: " + Pro.pro.page.lastPoint
-			//		+ " SD " + this.stateDraw);
+	
 			if (Pro.pro.page.lastPoint && this.stateDraw == true) {
 
 				var pos = Pro.pro.page.func.newPosition(this.position, e.point);
 				this.position = pos;
 				Pro.pro.page.curentrect.position = pos;
-				console.log("MMMMMMMMMMMM: "+pos);
+				//console.log("MMMMMMMMMMMM: "+pos);
 				var p= new paper.Point(pos.x-(Pro.pro.page.curentrect.size.width/2),pos.y-(Pro.pro.page.curentrect.size.height/2));
-				console.log("MMMMMMMMMMMMeee: "+Pro.pro.page.curentrect.size.width);
+				//console.log("MMMMMMMMMMMMeee: "+Pro.pro.page.curentrect.size.width);
 				Pro.pro.page.curentrect.arrCircles[0].position=p;
 
 			}
@@ -293,6 +296,8 @@ window.onload = function() {
 			console.log("Mouse Down: " + event.point);
 			// Pro.pro.page.buzystate=false;
 			this.stateDraw = true;
+		
+			
 
 		},
 		 
@@ -307,6 +312,10 @@ window.onload = function() {
 			this.fillColor="gold";
 			this.stateDraw=true;
 			// Pro.pro.page.func.drawrect(this.bounds.point, this.bounds.size);
+			Pro.pro.page.objectsArray.forEach(function(element, index, array) {
+				if(element.stateDraw==true){Pro.pro.page.curentImageIndex=index;
+				};
+			});
 
 		},
 		eventCircleRotateMouseUp : function(event, obj) {
@@ -315,6 +324,7 @@ window.onload = function() {
 			this.fillColor="blue";
 			this.stateDraw=false;
 			// Pro.pro.page.func.drawrect(this.bounds.point, this.bounds.size);
+			Pro.pro.page.curentImageIndex=null;
 
 		},
 		eventCircleRotateMouseMove : function(e, obj) {
@@ -335,11 +345,20 @@ window.onload = function() {
 				// move squere n image
 				//Pro.pro.page.curentrect.position=e.point;
 				//var res=e.point.y-Pro.pro.page.curentrect.position.y-Pro.pro.page.curentrect.position.y-yc;
-			var res1=e.point.y-Pro.pro.page.lastPointCircle.y;
-				console.log("heightrect "+Pro.pro.page.curentrect.position.y);
+		//	var res1=e.point.y-Pro.pro.page.lastPointCircle.y;
+			var newH=(Pro.pro.page.curentrect.position.y-pos.y)*2;
+			var newW=(Pro.pro.page.curentrect.position.x-pos.x)*2;
+				//console.log("heightrect ::: "+s);
 				//Pro.pro.page.curentrect.scale(1.05,Pro.pro.page.curentrect.position);
 			//Pro.pro.page.curentrect.bounds=new paper.Rectangle(e.point.x,e.point.y,Pro.pro.page.curentrect.size.width,Pro.pro.page.curentrect.size.height+res1);
-				Pro.pro.page.curentrect.size=new paper.Size(Pro.pro.page.curentrect.size.width+4,Pro.pro.page.curentrect.size.height+4);
+				Pro.pro.page.curentrect.size=new paper.Size(newW,newH);
+				
+				// take image and resize
+				if(Pro.pro.page.curentImageIndex){
+				var obj=Pro.pro.page.objectsArray[Pro.pro.page.curentImageIndex];
+				//obj.size=Pro.pro.page.curentrect.size;
+				console.log("MOVE CIRCLE: " +obj);
+				};
 				} catch (e) {
 					console.log(e.stack);
 				}
