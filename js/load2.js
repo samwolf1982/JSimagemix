@@ -19,6 +19,36 @@ window.onload = function() {
 	path.lineTo(start.add([ 200, -50 ]));
 	// Draw the view now:
 	paper.view.draw();
+	
+	
+	var handle;
+	// Create a circle shaped path at the center of the view,
+	// with a radius of 100:
+	var path = new paper.Path.Circle(paper.view.center, 100);
+	path.strokeColor = 'black';
+	
+	// Fully select the path, so we can see its handles:
+	path.fullySelected = true;
+	path.onmousedowm= function onMouseDown(event) {
+		handle = null;
+		// Do a hit test on path for handles:
+		var hitResult = path.hitTest(event.point, { handles: true });
+		if (hitResult) {
+			if (hitResult.type == 'handle-in') {
+				handle = hitResult.segment.handleIn;
+			} else {
+				handle = hitResult.segment.handleOut;
+			};
+		}
+	}
+	
+	function onMouseDrag(event) {
+		// If we hit a handle before, move it:
+		if (handle) {
+			handle.x += event.delta.x;
+			handle.y += event.delta.y;
+		}
+	}
 
 	Pro = {};
 	Pro.pro = {};
@@ -42,6 +72,7 @@ window.onload = function() {
 	    	shape.tt=true;
 	    	Pro.pro.page.curentrect=shape;
 	    	shape.strokeColor = 'black';
+shape.selected=true;
 		},
 		
 		removerect: function() {
