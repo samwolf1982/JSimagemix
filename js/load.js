@@ -293,7 +293,7 @@ window.onload = function() {
 		eventRectMouseDown : function(event, obj) {
 
 			Pro.pro.page.lastPoint = event.point;
-			console.log("Mouse Down: " + event.point);
+		//	console.log("Mouse Down: " + event.point);
 			// Pro.pro.page.buzystate=false;
 			this.stateDraw = true;
 		
@@ -351,13 +351,24 @@ window.onload = function() {
 				//console.log("heightrect ::: "+s);
 				//Pro.pro.page.curentrect.scale(1.05,Pro.pro.page.curentrect.position);
 			//Pro.pro.page.curentrect.bounds=new paper.Rectangle(e.point.x,e.point.y,Pro.pro.page.curentrect.size.width,Pro.pro.page.curentrect.size.height+res1);
-				Pro.pro.page.curentrect.size=new paper.Size(newW,newH);
+			var oldH=Pro.pro.page.curentrect.size.height;
+			var oldW=Pro.pro.page.curentrect.size.width;
+			Pro.pro.page.curentrect.size=new paper.Size(newW,newH);
 				
 				// take image and resize
-				if(Pro.pro.page.curentImageIndex){
+				if(Pro.pro.page.curentImageIndex!=null){
 				var obj=Pro.pro.page.objectsArray[Pro.pro.page.curentImageIndex];
 				//obj.size=Pro.pro.page.curentrect.size;
-				console.log("MOVE CIRCLE: " +obj);
+		 // matrix
+				//obj.translate(new paper.Point(2,7));
+				newH=Pro.pro.page.curentrect.size.height;
+			    newW=Pro.pro.page.curentrect.size.width;
+				var resW=(newW*100/oldW)/100;
+				var resH=(newH*100/oldH)/100;//ready
+				console.log("resH: "+resH+ " resW: "+resW);
+				obj.scale(resW, resH);
+				
+				
 				};
 				} catch (e) {
 					console.log(e.stack);
