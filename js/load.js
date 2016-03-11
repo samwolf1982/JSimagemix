@@ -162,7 +162,14 @@ window.onload = function() {
 			
 			//    просто разкоментировать
 		//	arr.push(Pro.pro.page.func.drawcircle(x+wi,y));//2 top rigth
-			//arr.push(Pro.pro.page.func.drawcircle(x+wi,y+he));//3 rigth bottom 
+			obj=null;
+			obj=Pro.pro.page.func.drawcircle(x+wi,y+he);
+			obj.onMouseEnter=Pro.pro.page.events.eventCircleScaleMouseEnter;
+			obj.onMouseDown=Pro.pro.page.events.eventCircleScaleMouseDown;
+			obj.onMouseUp=Pro.pro.page.events.eventCircleScaleMouseUp;
+			obj.onMouseMove=Pro.pro.page.events.eventCircleScaleMouseMove;
+			obj.stateDraw=false;
+			arr.push(obj);//3 rigth bottom 
 			//arr.push(Pro.pro.page.func.drawcircle(x,y+he));//4 down left
 			
 			return arr;
@@ -181,11 +188,24 @@ window.onload = function() {
 	};
 
 	Pro.pro.page.events = {
+			
+			eventCircleScaleMouseMove: function() {
+				console.log("Cirkle2 move");	
+			},
+			eventCircleScaleMouseUp: function() {
+				console.log("Cirkle2 up");	
+			},
+			eventCircleScaleMouseDown: function() {
+				console.log("Cirkle2 down");	
+			},
+			eventCircleScaleMouseEnter: function() {
+				console.log("Cirkle2 enter");	
+			},
 		/*
 		 * event when mouse enter in area object
 		 */
 		eventMouseEnter : function(event, obj) {
-			console.log("gif1 enter");
+			
 			// Pro.pro.page.func.drawrect(this.bounds.point, this.bounds.size);
 
 		},
