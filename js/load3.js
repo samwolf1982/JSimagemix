@@ -5,27 +5,13 @@
 // обработать
 // Only executed our code once the DOM is ready.
 window.onload = function() {
-	// Get a reference to the canvas object
-	var canvas = document.getElementById('myCanvas');
-	  canvas.syncDimension= true;
-	// Create an empty project and a view for the canvas:
-	paper.setup(canvas);
-	// Create a Paper.js Path to draw a line into it:
-	var path = new paper.Path();
-	// Give the stroke a color
-	path.strokeColor = 'black';
-	var start = new paper.Point(100, 100);
-	// Move to start and draw a line from there
-	path.moveTo(start);
-	// Note that the plus operator on Point objects does not work
-	// in JavaScript. Instead, we need to call the add() function:
-	path.lineTo(start.add([ 200, -50 ]));
-	// Draw the view now:
-	paper.view.draw();
-
-	Pro = {};
-	Pro.pro = {};
-
+Pro = {};
+Pro.pro = {};
+// Get a reference to the canvas object
+var canvas = document.getElementById('myCanvas');
+ // canvas.syncDimension= true;
+// Create an empty project and a view for the canvas:
+paper.setup(canvas);
 	/*
 	 * global value
 	 */
@@ -47,20 +33,8 @@ window.onload = function() {
 		drawimageOnCanvas : function(imageId, pointState, imageSize) {
 
 			var rastertGif = new paper.Raster(imageId);
-			//rastertGif.size=new paper.Size(50,50);
-			//rastertGif.ondragstart = function() {
-			//	return false;
-			//};
-			//if (pointState) {
-			//	rastertGif.position = pointState;
-		//	}
-			//;
-			//if (imageSize) {
-			//	rastertGif.size = imageSize;
-			//}
-			//;
 			rastertGif.position = paper.view.center;
-		
+			//rastertGif.onMouseDrag=eventRastonMouseDrag;
 			return rastertGif;
 		},
 		/*
@@ -73,9 +47,13 @@ window.onload = function() {
 		
 			shape.arrCircles=Pro.pro.page.func.drawcirclesOnRect(point, size);
 			//shape.arrCircles.push(Pro.pro.page.func.drawcircle(point));
+			shape.onMouseDrag = Pro.pro.page.events.eventRectonMouseDrag;
+			
 			shape.onMouseUp = Pro.pro.page.events.eventRectMouseUp;
-			shape.onMouseMove = Pro.pro.page.events.eventRectMouseMove;
+			//shape.onMouseMove = Pro.pro.page.events.eventRectMouseMove;
 			shape.onMouseDown = Pro.pro.page.events.eventRectMouseDown;
+		
+			
 			shape.strokeColor = 'black';
 			shape.opacity = 0.2;
 			shape.fillColor = 'grey';
@@ -138,9 +116,9 @@ window.onload = function() {
 
 			// search img where stateDraw+ move image to new destination
 			var res = null;
-			Pro.pro.page.objectsArray.forEach(function(item, i, arr) {
+			Pro.pro.page.objectsArray.forEach(function(item,i) {
 				if (item.stateDraw == true) {
-					console.log("OK search" + i);
+					console.log("OKy search" + i);
 					// arr[i].position=Pro.pro.page.curentrect.position;
 					// arr[i].stateDraw=false;
 					res = i;
@@ -151,15 +129,20 @@ window.onload = function() {
 			return res;
 		},
 		drawcirclesOnRect: function(point, size) {
+			
 			var arr=new Array();
 			var x=point.x,y=point.y,wi=size.width,he=size.height;
 			var obj=Pro.pro.page.func.drawcircle(x,y);   // 1 top left Rotate
 			obj.onMouseEnter=Pro.pro.page.events.eventCircleRotateMouseEnter;
 			obj.onMouseDown=Pro.pro.page.events.eventCircleRotateMouseDown;
 			obj.onMouseUp=Pro.pro.page.events.eventCircleRotateMouseUp;
-			obj.onMouseMove=Pro.pro.page.events.eventCircleRotateMouseMove;
+			obj.onMouseDrag=Pro.pro.page.events.eventCircleRotateonMouseDrag;
 			obj.stateDraw=false;
-			arr.push(obj);
+			obj.data={
+					index: 1
+			};
+			
+			arr[1]=obj;
 			
 			//    просто разкоментировать
 		//	arr.push(Pro.pro.page.func.drawcircle(x+wi,y));//2 top rigth
@@ -171,7 +154,12 @@ window.onload = function() {
 			obj.onMouseMove=Pro.pro.page.events.eventCircleScaleMouseMove;
 			obj.onMouseDrag=Pro.pro.page.events.eventCircleScaleonMouseDrag;
 			obj.stateDraw=false;
-			arr.push(obj);//3 rigth bottom 
+			
+			obj.data={
+					index: 3
+			};
+			arr[3]=obj;//3 rigth bottom 
+			
 			//arr.push(Pro.pro.page.func.drawcircle(x,y+he));//4 down left
 			
 			return arr;
@@ -191,7 +179,22 @@ window.onload = function() {
 
 	Pro.pro.page.events = {
 			
-			seventCircleScaleMouseMove: function(e){
+		      // rectangle
+			eventRectonMouseDrag: function(event) {
+				//Pro.pro.page.curentrect.position += event.delta;
+				console.log("Rect  Drag "+this.position);
+			   // this.position += event.delta;
+			   var p= new paper.Point(this.position.x+event.delta.x,this.position.y+event.delta.y);
+			   this.position=p;
+			
+				
+			},
+			
+			eventRastonMouseDrag: function() {
+				
+				
+			},
+			eventCircleScaleMouseMove: function(e){
 				//console.log("Cirkle2 move");	
 			},
 			eventCircleScaleMouseUp: function(e) {
@@ -267,7 +270,7 @@ window.onload = function() {
 				   //  group.rotate(event.point.subtract(handle1.position).angle - (handle2.position.subtract(handle1.position)).angle);
 					Pro.pro.page.curentGroup.rotate(event.point.subtract(obj.position).angle - (this.position.subtract(obj.position)).angle);
 				  
-				  console.log("Cirkle2 Drag");	
+				//  console.log("Cirkle2 Drag");	
 			},
 			
 			eventCircleScaleMouseEnter: function() {
@@ -280,7 +283,6 @@ window.onload = function() {
 
 			},
 			eventCircleRotateMouseDown : function(e, obj) {
-			//console.log("mouseRotateDown "+e.point);
 				Pro.pro.page.lastPointCircle=e.point;
 				this.fillColor="yellow";
 				this.stateDraw=true;
@@ -289,6 +291,13 @@ window.onload = function() {
 					if(element.stateDraw==true){Pro.pro.page.curentImageIndex=index;
 					};
 					
+					//Pro.pro.page.curentrect.arrCircles.forEach(function(item, i, arr) {
+						//if(arr[i].stateDraw==false){
+							//arr[i].remove();
+						//	delete arr[i];
+					//	}
+					//});
+			
 					
 					
 					
@@ -297,18 +306,20 @@ window.onload = function() {
 				});
 			},
 			eventCircleRotateMouseUp : function(event, obj) {
-				//console.log("mouseRotateDown");
+				console.log("mouseRotateDoUP");
 				Pro.pro.page.lastPointCircle=null;
 				this.fillColor="blue";
 				this.stateDraw=false;
 				// Pro.pro.page.func.drawrect(this.bounds.point, this.bounds.size);
 				Pro.pro.page.curentImageIndex=null;
+			//delete	Pro.pro.page.curentrect.arrCircles[0];
+			Pro.pro.page.curentrect.arrCircles=Pro.pro.page.func.drawcirclesOnRect(event.position, Pro.pro.page.curentrect.size);
 
 			},
-			eventCircleRotateMouseMove : function(e, obj) {
-				//console.log("mouseRotateDown");
-				console.log("300 moveCircle " + " P: " + Pro.pro.page.lastPointCircle
-						+ " SD " + this.stateDraw);
+			eventCircleRotateonMouseDrag : function(e, obj) {
+			
+				//console.log("300 moveCircle " + " P: " + Pro.pro.page.lastPointCircle
+						//+ " SD " + this.stateDraw);
 				if (Pro.pro.page.lastPointCircle && this.stateDraw == true) {
 					//var pos = Pro.pro.page.func.newPosition(e.point, this.position);
 					try {
@@ -341,6 +352,8 @@ window.onload = function() {
 					console.log("resH: "+resH+ " resW: "+resW);
 					obj.scale(resW, resH);
 					
+					console.log("mouseRotateDrag "+obj.bounds.bottomRight);
+					var c3= Pro.pro.page.curentrect.arrCircles
 					
 					};
 					} catch (e) {
@@ -392,7 +405,7 @@ window.onload = function() {
 
 			if (Pro.pro.page.curentrect) {
 				// console.log(Pro.pro.page.curentrect);
-				Pro.pro.page.curentrect.arrCircles[0].remove();
+	//Pro.pro.page.curentrect.arrCircles[0].remove();
 				Pro.pro.page.curentrect.remove();// removeOn({
 				paper.view.update();
 			}
@@ -405,12 +418,15 @@ window.onload = function() {
 					this.bounds.point, this.bounds.size);
 			// Pro.pro.page.curentrect.bringToFront();
 			Pro.pro.page.curentrect.onMouseEnter = function(event) {
-				console.log("curentrect enter reckt");
+			//	console.log("curentrect enter reckt");
+				
 			};
+			
 
 		},
 		eventMouseUp : function(event, obj) {
 
+			console.log("Mup move " + Pro.pro.page.lastPoint);
 			Pro.pro.page.lastPoint = null;
 			// Pro.pro.page.buzystate=false;
 			this.stateDraw = false;
@@ -448,22 +464,10 @@ window.onload = function() {
 			console.log(Pro.pro.page.func.whoisimagestate());
 			var index = Pro.pro.page.func.whoisimagestate();
 			if (index == null) {
-				return;
+				return null;
 			}
 			;
-			// console.log("index " + index);
 			Pro.pro.page.objectsArray[index].position = Pro.pro.page.curentrect.position;
-			// console.log("index " + index);
-			// Pro.pro.page.objectsArray[index].stateDraw=false;
-			// Pro.pro.page.objectsArray.forEach(function(item, i, arr) {
-			// if(item.stateDraw==true){
-			// console.log("OK");
-			// arr[i].position=Pro.pro.page.curentrect.position;
-			// arr[i].stateDraw=false;
-			// return;
-			// }
-			// }
-			// );
 
 		},
 		eventRectMouseDown : function(event, obj) {
@@ -471,6 +475,8 @@ window.onload = function() {
 			Pro.pro.page.lastPoint = event.point;
 		//	console.log("Mouse Down: " + event.point);
 			// Pro.pro.page.buzystate=false;
+			Pro.pro.page.curentrect=this;
+			console.log("MouseDown:" +this);
 			this.stateDraw = true;
 		
 			
