@@ -270,7 +270,7 @@ paper.setup(canvas);
 				   //  group.rotate(event.point.subtract(handle1.position).angle - (handle2.position.subtract(handle1.position)).angle);
 					Pro.pro.page.curentGroup.rotate(event.point.subtract(obj.position).angle - (this.position.subtract(obj.position)).angle);
 				  
-				//  console.log("Cirkle2 Drag");	
+	//			 console.log("eventCircleScaleonMouseDrag");	
 			},
 			
 			eventCircleScaleMouseEnter: function() {
